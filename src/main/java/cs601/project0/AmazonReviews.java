@@ -19,56 +19,85 @@ public class AmazonReviews {
     }
 
     public static void main(String[] args) {
-
         String inputFileLocation = null;
         String outputFileLocation = null;
 
         for (int i = 0; i < args.length; i = i + 2) {
-            if(args[i].equals("-input")) {
+            if(args[i].equals("-input") && i + 1 < args.length) {
                 inputFileLocation = args[i + 1];
             }
-            else if(args[i].equals("-output")) {
+            else if(args[i].equals("-output") && i + 1 < args.length) {
                 outputFileLocation = args[i + 1];
             }
         }
 
         AmazonReviews amazonReviews = new AmazonReviews();
-        //Verify input
 
-        boolean isReadSuccess = amazonReviews.read(inputFileLocation);
+        boolean isValid = amazonReviews.validate(inputFileLocation, outputFileLocation);
 
-        if(isReadSuccess) {
-            amazonReviews.write(outputFileLocation);
+        if(isValid) {
+            boolean isReadSuccess = amazonReviews.read(inputFileLocation);
+
+            if (isReadSuccess) {
+                amazonReviews.write(outputFileLocation);
+            }
         }
 
         amazonReviews.Dispose();
-
-        System.out.println("Completed");
     }
 
+    /** Validates whether given inputs are not null and files exist at a given file locations.
+     * @param inputFileLocation The path to a file
+     * @param outputFileLocation The path to a file
+     * @return returns true if inputs are not null and files exist at a given location else false
+     */
+    public boolean validate(String inputFileLocation, String outputFileLocation) {
+        boolean flag = false;
+
+        if(Strings.isNullOrEmpty(inputFileLocation) || Strings.isNullOrEmpty(outputFileLocation)) {
+            System.out.println("Passed arguments are incorrect");
+        }
+        else if(!Files.exists(Paths.get(inputFileLocation))) {
+            System.out.printf("No file found at a location %s", inputFileLocation);
+        }
+        else {
+            flag = true;
+        }
+
+        return flag;
+    }
+
+    /** Read the file line by line, fetch productId, userId, score from a file, and send the information to the Products and Users class.
+     * @param fileLocation The path to a file
+     * @return returns true if reading is successful else false
+     */
     public boolean read(String fileLocation) {
+        boolean flag = false;
 
-        System.out.println("Reading file...");
-
-        boolean flag = true;
         try (BufferedReader br = Files.newBufferedReader(Paths.get(fileLocation), StandardCharsets.ISO_8859_1)) {
             String productId = null;
             String userId = null;
-            float score = 0.0f;
+            float score;
             String line = br.readLine();
 
             while (line != null) {
-                if(line.startsWith(Constants.productIdText)) {
+                if(line.startsWith(Constants.productIdText) && Strings.isNull(productId)) {
                     productId = line.replace(Constants.productIdText, "");
-                    products.upsertReview(productId);
                 }
-                else if(line.startsWith(Constants.userIdText)) {
+                else if(line.startsWith(Constants.userIdText) && !Strings.isNullOrEmpty(productId) && Strings.isNull(userId)) {
                     userId = line.replace(Constants.userIdText, "");
-                    users.upsert(userId);
                 }
-                else if(line.startsWith(Constants.scoreText)) {
+                else if(line.startsWith(Constants.scoreText) && !Strings.isNullOrEmpty(productId) && !Strings.isNullOrEmpty(userId)) {
                     score = Float.parseFloat(line.replace(Constants.scoreText, ""));
+
+                    products.upsertReview(productId);
+                    users.upsert(userId);
                     products.upsertScore(productId, score);
+
+                    productId = null;
+                    userId = null;
+
+                    flag = true;
                 }
 
                 line = br.readLine();
@@ -82,12 +111,11 @@ public class AmazonReviews {
         return flag;
     }
 
+    /** Opens or creates a file for writing userIds with the largest number of reviews, products with the largest number of reviews, and products with the highest average score.
+     * @param fileLocation The path to a file
+     */
     public void write(String fileLocation) {
-
-        System.out.println("Writing into a file...");
-
         try (BufferedWriter bw = Files.newBufferedWriter(Paths.get(fileLocation), StandardCharsets.ISO_8859_1)) {
-
             bw.write(Constants.userLargestReviews);
             bw.newLine();
             ArrayList<String> ids = users.getUserIds(users.getMaxReview());
@@ -117,6 +145,8 @@ public class AmazonReviews {
         }
     }
 
+    /** Nullify the map object from memory
+     */
     public void Dispose() {
         users.Dispose();
         products.Dispose();
