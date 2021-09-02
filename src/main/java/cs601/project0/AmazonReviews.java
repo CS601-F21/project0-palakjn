@@ -50,10 +50,10 @@ public class AmazonReviews {
         amazonReviews.Dispose();
     }
 
-    /** Validates whether given inputs are not null and files exist at a given file locations.
+    /** Validates whether given inputs are not null and a file exist at a given file location.
      * @param inputFileLocation The path to a file
      * @param outputFileLocation The path to a file
-     * @return returns true if inputs are not null and files exist at a given location else false
+     * @return returns true if inputs are not null and a file exist at a given location else false
      */
     public boolean validate(String inputFileLocation, String outputFileLocation) {
         boolean flag = false;
