@@ -7,6 +7,12 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
+/**
+ * Testing functions of class "Products.java"
+ *
+ * @author Palak Jain
+ * */
+
 public class ProductsTest {
     static Products emptyProducts;
     static Products nonEmptyProducts;

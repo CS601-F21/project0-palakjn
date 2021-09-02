@@ -1,5 +1,12 @@
 package cs601.project0;
 
+/**
+ * An extension class for String to perform few string operations.
+ * Current version has one defined function as of now. In the future versions, more functions can be added.
+ *
+ * @author Palak Jain
+ * */
+
 public class Strings {
 
     /** Checks if a given string is null or empty

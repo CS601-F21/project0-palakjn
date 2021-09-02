@@ -7,6 +7,12 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
+/**
+ * Testing functions of class "Users.java"
+ *
+ * @author Palak Jain
+ * */
+
 public class UsersTest {
 
         static Users emptyUsers;

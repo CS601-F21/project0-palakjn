@@ -5,6 +5,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The class maintains one mapper "userId to the number of reviews" only and.
+ * finds the userId with the maximum reviewsCount.
+ *
+ * @author Palak Jain
+ * */
 public class Users {
 
     private HashMap<String, Integer> reviewsMap;
@@ -28,6 +34,7 @@ public class Users {
         int max = 0;
 
         for(Map.Entry<String, Integer> entry : reviewsMap.entrySet()) {
+            //Swap the max value if the value is greater than current max.
             if(entry.getValue() > max) {
                 max = entry.getValue();
             }

@@ -5,6 +5,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The class maintains two mappers "productId to the number of reviews" and
+ * "productId to the total score". Finds the productId with the maximum reviewsCount
+ * or average score.
+ *
+ * @author Palak Jain
+ * */
 public class Products {
 
     private HashMap<String, Integer> reviews;
@@ -30,6 +37,7 @@ public class Products {
         int max = 0;
 
         for(Map.Entry<String, Integer> entry : reviews.entrySet()) {
+            //Swap the max value if the value is greater than current max.
             if(entry.getValue() > max) {
                 max = entry.getValue();
             }
@@ -74,7 +82,9 @@ public class Products {
             Integer revCount = reviews.getOrDefault(entry.getKey(), null);
 
             if(revCount != null) {
+                //Swap the max value if the value is greater than current max.
                 if((entry.getValue() / revCount) > max) {
+                    //An average score is total score divided by total number of reviews.
                     max = entry.getValue() / revCount;
                 }
             }
