@@ -20,6 +20,54 @@ class AmazonReviewsTest {
         checkProjectOutput("AmazonReviews Test", args, actual, expected);
     }
 
+    @Test
+    public void validate_nullInputs_returnFalse() {
+        AmazonReviews amazonReviews = new AmazonReviews();
+        Assertions.assertFalse(amazonReviews.validate(null, null));
+    }
+
+    @Test
+    public void validate_wrongUrl_returnFalse() {
+        AmazonReviews amazonReviews = new AmazonReviews();
+        Assertions.assertFalse(amazonReviews.validate("IncorrectInputLoc.txt", "CorrectFormat.txt"));
+    }
+
+    @Test
+    public void validate_correctUrl_returnTrue() {
+        AmazonReviews amazonReviews = new AmazonReviews();
+        Assertions.assertTrue(amazonReviews.validate("EmptyFile.txt", "CorrectFormat.txt"));
+    }
+
+    @Test
+    public void read_wrongLocation_returnFalse() {
+        AmazonReviews amazonReviews = new AmazonReviews();
+        Assertions.assertFalse(amazonReviews.read("IncorrectFileLocation.txt"));
+    }
+
+    @Test
+    public void read_emptyFile_returnFalse() {
+        AmazonReviews amazonReviews = new AmazonReviews();
+        Assertions.assertFalse(amazonReviews.read("EmptyFile.txt"));
+    }
+
+    @Test
+    public void read_wrongText_returnFalse() {
+        AmazonReviews amazonReviews = new AmazonReviews();
+        Assertions.assertFalse(amazonReviews.read("WrongText.txt"));
+    }
+
+    @Test
+    public void read_notInOrder_returnFalse() {
+        AmazonReviews amazonReviews = new AmazonReviews();
+        Assertions.assertFalse(amazonReviews.read("WrongOrder.txt"));
+    }
+
+    @Test
+    public void read_correctText_returnTrue() {
+        AmazonReviews amazonReviews = new AmazonReviews();
+        Assertions.assertTrue(amazonReviews.read("CorrectFormat.txt"));
+    }
+
     /**
      * Methods adapted from sjengle 212 projects.
      */
@@ -84,7 +132,6 @@ class AmazonReviewsTest {
             }
         }
     }
-
 
     public static void checkProjectOutput(String testName, String[] args,
                                           Path actual, Path expected) {

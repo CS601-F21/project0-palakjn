@@ -9,12 +9,4 @@ public class Strings {
     public static boolean isNullOrEmpty(String s) {
         return s == null || s.isBlank() || s.isEmpty();
     }
-
-    /** Checks if a given string is null
-     * @param s string to compare
-     * @return true if string is null else false
-     */
-    public static boolean isNull(String s) {
-        return s == null;
-    }
 }

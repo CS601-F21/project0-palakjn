@@ -1,8 +1,6 @@
 package cs601.project0;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -22,23 +20,29 @@ public class AmazonReviews {
         String inputFileLocation = null;
         String outputFileLocation = null;
 
+        //Reading arguments
         for (int i = 0; i < args.length; i = i + 2) {
             if(args[i].equals("-input") && i + 1 < args.length) {
+                //Next index if exists in an array will be the value
                 inputFileLocation = args[i + 1];
             }
             else if(args[i].equals("-output") && i + 1 < args.length) {
+                //Next index if exists in an array will be the value
                 outputFileLocation = args[i + 1];
             }
         }
 
         AmazonReviews amazonReviews = new AmazonReviews();
 
+        //Validation of arguments whether a file exists at a value specified after -input flag.
         boolean isValid = amazonReviews.validate(inputFileLocation, outputFileLocation);
 
         if(isValid) {
+            //Reading file.
             boolean isReadSuccess = amazonReviews.read(inputFileLocation);
 
             if (isReadSuccess) {
+                //Writing the output to a file in a proper format.
                 amazonReviews.write(outputFileLocation);
             }
         }
@@ -75,36 +79,48 @@ public class AmazonReviews {
         boolean flag = false;
 
         try (BufferedReader br = Files.newBufferedReader(Paths.get(fileLocation), StandardCharsets.ISO_8859_1)) {
-            String productId = null;
-            String userId = null;
+            String productId;
+            String userId;
             float score;
             String line = br.readLine();
 
             while (line != null) {
-                if(line.startsWith(Constants.productIdText) && Strings.isNull(productId)) {
-                    productId = line.replace(Constants.productIdText, "");
-                }
-                else if(line.startsWith(Constants.userIdText) && !Strings.isNullOrEmpty(productId) && Strings.isNull(userId)) {
-                    userId = line.replace(Constants.userIdText, "");
-                }
-                else if(line.startsWith(Constants.scoreText) && !Strings.isNullOrEmpty(productId) && !Strings.isNullOrEmpty(userId)) {
-                    score = Float.parseFloat(line.replace(Constants.scoreText, ""));
+                //A block of lines having details of one product will start from the line 'product/productId'.
+               if(line.startsWith(Constants.productIdText)) {
+                   productId = line.replace(Constants.productIdText, "");
 
-                    products.upsertReview(productId);
-                    users.upsert(userId);
-                    products.upsertScore(productId, score);
+                   line = br.readLine();
 
-                    productId = null;
-                    userId = null;
+                   //Immediate next line will be 'review/userId'.
+                   if(line.startsWith(Constants.userIdText) && !Strings.isNullOrEmpty(productId)) {
+                       userId = line.replace(Constants.userIdText, "");
 
-                    flag = true;
-                }
+                       //The third line from 'review/userId' will be 'review/score'.
+                       for (int i = 1; i <= 3; i++) {
+                           line = br.readLine();
+                       }
+
+                       if(line.startsWith(Constants.scoreText) && !Strings.isNullOrEmpty(userId)) {
+                           score = Float.parseFloat(line.replace(Constants.scoreText, ""));
+
+                           //Inserting values to HashMap once get the full details of one product.
+                           products.upsertReview(productId);
+                           products.upsertScore(productId, score);
+                           users.upsert(userId);
+
+                           flag = true;
+                       }
+                   }
+               }
 
                 line = br.readLine();
             }
         }
         catch (IOException io) {
-            System.out.printf("An error occurred while accessing file at a location %s. %s%n", fileLocation, io.getMessage());
+            StringWriter writer = new StringWriter();
+            io.printStackTrace(new PrintWriter(writer));
+
+            System.out.printf("An error occurred while accessing file at a location %s. %s", fileLocation, writer);
             flag = false;
         }
 

@@ -29,9 +29,9 @@ public class Products {
     public int getMaxReview() {
         int max = 0;
 
-        for(Map.Entry entry : reviews.entrySet()) {
-            if((Integer) entry.getValue() > max) {
-                max = (Integer) entry.getValue();
+        for(Map.Entry<String, Integer> entry : reviews.entrySet()) {
+            if(entry.getValue() > max) {
+                max = entry.getValue();
             }
         }
 
@@ -45,9 +45,9 @@ public class Products {
     public ArrayList<String> getIdsWithMaxRev(int revCount) {
         ArrayList<String> productIds = new ArrayList<>();
 
-        for (Map.Entry entry : reviews.entrySet()) {
-            if((Integer) entry.getValue() == revCount) {
-                productIds.add((String) entry.getKey());
+        for (Map.Entry<String, Integer> entry : reviews.entrySet()) {
+            if(entry.getValue() == revCount) {
+                productIds.add(entry.getKey());
             }
         }
 
@@ -70,12 +70,12 @@ public class Products {
     public float getMaxAvgScore() {
         float max = 0.0f;
 
-        for(Map.Entry entry : totalScores.entrySet()) {
-            Integer revCount = reviews.getOrDefault((String) entry.getKey(), null);
+        for(Map.Entry<String, Float> entry : totalScores.entrySet()) {
+            Integer revCount = reviews.getOrDefault(entry.getKey(), null);
 
             if(revCount != null) {
-                if(((Float) entry.getValue() / revCount) > max) {
-                    max = (Float) entry.getValue() / revCount;
+                if((entry.getValue() / revCount) > max) {
+                    max = entry.getValue() / revCount;
                 }
             }
         }
@@ -90,12 +90,12 @@ public class Products {
     public ArrayList<String> getIdsWithMaxScore(float score) {
         ArrayList<String> productIds = new ArrayList<>();
 
-        for(Map.Entry entry : totalScores.entrySet()) {
-            Integer revCount = reviews.getOrDefault((String) entry.getKey(), null);
+        for(Map.Entry<String, Float> entry : totalScores.entrySet()) {
+            Integer revCount = reviews.getOrDefault(entry.getKey(), null);
 
             if(revCount != null) {
-                if(((Float) entry.getValue() / revCount) == score) {
-                    productIds.add((String) entry.getKey());
+                if((entry.getValue() / revCount) == score) {
+                    productIds.add(entry.getKey());
                 }
             }
         }
