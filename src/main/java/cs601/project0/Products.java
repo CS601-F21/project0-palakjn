@@ -6,15 +6,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * The class maintains two mappers "productId to the number of reviews" and
- * "productId to the total score". Finds the productId with the maximum reviewsCount
+ * Finds all productIds with the maximum reviewsCount
  * or average score.
  *
  * @author Palak Jain
  * */
 public class Products {
 
+    /**
+     * Map productId to the number of reviews.
+     */
     private HashMap<String, Integer> reviews;
+
+    /**
+     * Map productId to the total number of scores.
+     */
     private HashMap<String, Float> totalScores;
 
     public Products() {
@@ -22,7 +28,8 @@ public class Products {
         totalScores = new HashMap<>();
     }
 
-    /** Insert productId as a key and set the value as one or increase the number of reviews by one if productId already exists.
+    /**
+     * Insert productId as a key and set the value as one or increase the number of reviews by one if productId already exists.
      * @param productId UniqueId of a product
      */
     public void upsertReview(String productId) {
@@ -30,7 +37,8 @@ public class Products {
         reviews.put(productId, value + 1);
     }
 
-    /** Search through the map and find the maximum number of reviews one or more product has.
+    /**
+     * Search through the map and find the maximum number of reviews one or more product has.
      * @return The maximum value of the number of reviews
      */
     public int getMaxReview() {
@@ -46,7 +54,8 @@ public class Products {
         return max;
     }
 
-    /** Search through the map and finds all the productIds with the given number of reviews.
+    /**
+     * Search through the map and finds all the productIds with the given number of reviews.
      * @param revCount The number of reviews
      * @return The list containing all the product's IDs with the given review count.
      */
@@ -63,7 +72,8 @@ public class Products {
         return productIds;
     }
 
-    /** Insert productId as a key and set the value as the product's score or add the score to the existing one if productId already exists.
+    /**
+     * Insert productId as a key and set the value as the product's score or add the score to the existing one if productId already exists.
      * @param productId UniqueId of a product
      * @param score Score of a product
      */
@@ -72,7 +82,8 @@ public class Products {
         totalScores.put(productId, value + score);
     }
 
-    /** Search through the map and find the maximum average score one or more product has.
+    /**
+     * Search through the map and find the maximum average score one or more product has.
      * @return The maximum average score of a product
      */
     public float getMaxAvgScore() {
@@ -93,7 +104,8 @@ public class Products {
         return max;
     }
 
-    /** Search through the map and finds all the productIds with a given score.
+    /**
+     * Search through the map and finds all the productIds with a given score.
      * @param score Score of a product
      * @return The list containing all the product's IDs with the given score.
      */
@@ -114,7 +126,8 @@ public class Products {
         return productIds;
     }
 
-    /** Nullify the map objects from memory
+    /**
+     * Nullify the map objects from memory
      */
     public void Dispose() {
         reviews = null;

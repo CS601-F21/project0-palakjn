@@ -6,20 +6,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * The class maintains one mapper "userId to the number of reviews" only and.
- * finds the userId with the maximum reviewsCount.
+ * Finds all the userIds with the maximum reviewsCount.
  *
  * @author Palak Jain
  * */
 public class Users {
 
+    /**
+     * Map userId to the number of reviews.
+     */
     private HashMap<String, Integer> reviewsMap;
 
     public Users() {
         reviewsMap = new HashMap<>();
     }
 
-    /** Insert UserId as a key and set the value as one or increase the number of reviews by one if userId already exists.
+    /**
+     * Insert UserId as a key and set the value as one or increase the number of reviews by one if userId already exists.
      * @param userId UniqueId of a user
      */
     public void upsert(String userId) {
@@ -27,7 +30,8 @@ public class Users {
         reviewsMap.put(userId, value + 1);
     }
 
-    /** Search through the map and find the maximum number of reviews one or more user has.
+    /**
+     * Search through the map and find the maximum number of reviews one or more user has.
      * @return The maximum value of the number of reviews
      */
     public int getMaxReview() {
@@ -43,7 +47,8 @@ public class Users {
         return max;
     }
 
-    /** Search through the map and finds all the userIds with the given number of reviews.
+    /**
+     * Search through the map and finds all the userIds with the given number of reviews.
      * @param reviewsCount The number of reviews
      * @return The list containing all the user's IDs with the given review count.
      */
@@ -60,7 +65,8 @@ public class Users {
         return  userIds;
     }
 
-    /** Nullify the map object from memory
+    /**
+     * Nullify the map object from memory
      */
     public void Dispose()
     {

@@ -6,6 +6,31 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+/**
+ *  A data processing program that performs data analysis on a movie review dataset.
+ *
+ *  Read the file line by line and extracts below information:
+ *       1) User IDs of the users with the largest number of reviews (field review/userId)
+ *       2) Product IDs of the products with the largest number of reviews (field product/productId)
+ *       3) Product IDs of the products with the highest average score (field product/productId)
+ *
+ *  And, stores the output in below format to a file.
+ *      Users with largest number of reviews:
+ *         <UsersId>
+ *         <UsersId>
+ *         ....
+ *      Products with largest number of reviews:
+ *         <productId>
+ *         <productId>
+ *         .....
+ *      Products with the highest average score:
+ *         <productId>
+ *         <productId>
+ *          .....
+ *
+ * @author Palak Jain
+ * */
+
 public class AmazonReviews {
 
     private Users users;
@@ -50,7 +75,8 @@ public class AmazonReviews {
         amazonReviews.Dispose();
     }
 
-    /** Validates whether given inputs are not null and a file exist at a given file location.
+    /**
+     * Validates whether given inputs are not null and a file exist at a given file location.
      * @param inputFileLocation The path to a file
      * @param outputFileLocation The path to a file
      * @return returns true if inputs are not null and a file exist at a given location else false
@@ -71,7 +97,8 @@ public class AmazonReviews {
         return flag;
     }
 
-    /** Read the file line by line, fetch productId, userId, score from a file, and send the information to the Products and Users class.
+    /**
+     * Read the file line by line, fetch productId, userId, score from a file, and send the information to the Products and Users class.
      * @param fileLocation The path to a file
      * @return returns true if reading is successful else false
      */
@@ -127,7 +154,8 @@ public class AmazonReviews {
         return flag;
     }
 
-    /** Opens or creates a file for writing userIds with the largest number of reviews, products with the largest number of reviews, and products with the highest average score.
+    /**
+     * Opens or creates a file for writing userIds with the largest number of reviews, products with the largest number of reviews, and products with the highest average score.
      * @param fileLocation The path to a file
      */
     public void write(String fileLocation) {
@@ -161,7 +189,8 @@ public class AmazonReviews {
         }
     }
 
-    /** Nullify the map object from memory
+    /**
+     * Nullify the map object from memory
      */
     public void Dispose() {
         users.Dispose();

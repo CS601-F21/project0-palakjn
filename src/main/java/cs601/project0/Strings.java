@@ -9,7 +9,8 @@ package cs601.project0;
 
 public class Strings {
 
-    /** Checks if a given string is null or empty
+    /**
+     * Checks if a given string is null or empty
      * @param s string to compare
      * @return true if string is null or empty else false
      */
